@@ -26,9 +26,12 @@ function yellow(){
 install_caddy() {
 
     curl https://getcaddy.com | bash -s personal
-    # curl -s https://raw.githubusercontent.com/mholt/caddy/master/dist/init/linux-systemd/caddy.service -o /etc/systemd/system/caddy.service
+    curl -s https://raw.githubusercontent.com/wzc0x0/break-firewall/master/v2ray-tls-ws/caddy.service -o /etc/systemd/system/caddy.service
+
     mkdir -p /etc/caddy
     mkdir -p /var/www
+    
+    curl -s https://raw.githubusercontent.com/wzc0x0/break-firewall/master/v2ray-tls-ws/index.html -o /var/www/index.html
     cat > /etc/caddy/Caddyfile <<-EOF
     dls.cankiss.ml:443 {
         root /var/www
@@ -45,7 +48,6 @@ install_caddy() {
 EOF
     systemctl enable caddy
     systemctl start caddy
-# curl https://getcaddy.com | bash -s personal http.forwardproxy,http.proxyprotocol
 }
 
 install_v2ray() {
@@ -111,6 +113,7 @@ start_menu(){
     green " 2. 升级v2ray"
     red " 3. 卸载v2ray"
     yellow " 0. 退出脚本"
+    green " 4. 安装caddy"
     echo
     read -p "请输入数字:" num
     case "$num" in
@@ -126,6 +129,9 @@ start_menu(){
     ;;
     0)
     exit 1
+    ;;
+    4)
+    install_caddy
     ;;
     *)
     clear
