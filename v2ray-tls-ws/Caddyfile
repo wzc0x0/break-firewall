@@ -1,0 +1,28 @@
+domain:443 {
+    root /var/www
+    gzip
+    index index.html
+    tls /etc/ssl/caddy/certificate.crt /etc/ssl/caddy/private.key
+    header / -Server
+    header / Strict-Transport-Security "max-age=31536000;"
+    proxy /ray localhost:10086 {
+            websocket
+            header_upstream -Origin
+    }
+}
+http://domain {
+   redir 301 {
+     /  https://{host}{uri}
+   }
+}
+https://domain {
+   gzip
+   tls  /etc/ssl/caddy/certificate.crt /etc/ssl/caddy/private.key
+   header / Strict-Transport-Security "max-age=31536000;"
+   proxy / https://www.google.com {
+        header_upstream X-Real-IP {remote}
+        header_upstream User-Agent {>User-Agent}
+        header_upstream Accept-Language zh-CN
+        header_upstream Accept-Encoding identity
+   }
+}
