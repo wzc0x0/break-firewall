@@ -141,7 +141,7 @@ start_menu() {
     bash <(curl -L -s https://install.direct/go.sh)  
     ;;
     3)
-    remove_goddy
+    remove_v2ray
     ;;
     4)
     remove_goddy
