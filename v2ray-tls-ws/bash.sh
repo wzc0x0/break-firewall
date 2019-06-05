@@ -33,25 +33,6 @@ install_v2ray() {
     v2uuid=$(cat /proc/sys/kernel/random/uuid)
     sed -i "s/uid/$v2uuid/;" config.json
     systemctl restart v2ray.service
-
-    clear
-    green
-    green "安装已经完成"
-    green 
-    green "===========配置参数============"
-    green "地址：${domain}"
-    green "端口：443"
-    green "uuid：${v2uuid}"
-    green "额外id：99"
-    green "加密方式：auto"
-    green "传输协议：ws"
-    green "底层传输：tls"
-    green
-    green "shadowsocks"
-    green "端口：8080"
-    green "加密方式：aes-256-gcm",
-    green "密码：helloworld"
-    green
 }
 
 remove_v2ray() {
@@ -69,15 +50,11 @@ install_goddy() {
 
     cp /usr/local/bin/caddy /usr/bin/
 
-    if [! -d "/var/www" ]; then 
-        mkdir /var/www
-        chmod 555 /var/www
-    fi
-    
-    if [! -d "/etc/caddy" ]; then
-        mkdir /etc/caddy
-        chown -R root:root /etc/caddy
-    fi
+    mkdir /var/www
+    chmod 555 /var/www
+
+    mkdir /etc/caddy
+    chown -R root:root /etc/caddy
 
     curl -s https://raw.githubusercontent.com/wzc0x0/break-firewall/master/v2ray-tls-ws/index.html -o /var/www/index.html
     cat > /etc/caddy/Caddyfile <<EOF
@@ -97,6 +74,24 @@ EOF
 
     caddy -service install -conf /etc/caddy/Caddyfile
     systemctl restart caddy.service
+
+    clear
+    green
+    green "安装已经完成"
+    green 
+    green "===========配置参数============"
+    green "地址：${domain}"
+    green "端口：443"
+    green "uuid：${v2uuid}"
+    green "额外id：99"
+    green "加密方式：auto"
+    green "传输协议：ws"
+    green "底层传输：tls"
+    green "shadowsocks"
+    green "端口：8080"
+    green "加密方式：aes-256-gcm",
+    green "密码：helloworld"
+    green
 }
 
 try_enable_bbr() {
